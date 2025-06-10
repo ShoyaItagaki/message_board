@@ -29,10 +29,12 @@ public class IndexServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        EntityManager em = DBUtil.createEntityManager();
-        List<Message> messages = em.createNamedQuery("getAllMessages", Message.class).getResultList();
-        response.getWriter().append(Integer.valueOf(messages.size()).toString());
-        em.close();
-    }
-}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException{ 
+        EntityManager em = DBUtil.createEntityManager(); 
+        List<Message> messages = em.createNamedQuery("getAllMessages", Message.class).getResultList(); 
+        em.close(); 
+        request.setAttribute("messages", messages); 
+        var rd = request.getRequestDispatcher("/WEB-INF/views/messages/index.jsp"); 
+        rd.forward(request, response); 
+        }}
